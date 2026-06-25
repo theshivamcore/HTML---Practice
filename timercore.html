@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>TimerCore</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+
+background:url("background.png");
+
+background-size:cover;
+
+background-position:center;
+
+background-repeat:no-repeat;
+
+background-attachment:fixed;
+
+min-height:100vh;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+padding:25px;
+
+overflow-x:hidden;
+
+}
+
+body::before{
+
+content:"";
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.82);
+
+backdrop-filter:blur(8px);
+
+z-index:-1;
+
+}
+
+.container{
+
+width:100%;
+
+max-width:430px;
+
+background:rgba(20,20,30,.55);
+
+backdrop-filter:blur(18px);
+
+border-radius:25px;
+
+padding:25px;
+
+border:1px solid rgba(255,255,255,.1);
+
+box-shadow:
+
+0 0 30px #00d9ff55,
+
+0 0 60px #0077ff33;
+
+animation:show .8s;
+
+}
+
+@keyframes show{
+
+from{
+
+opacity:0;
+
+transform:translateY(40px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.logo{
+
+width:130px;
+
+height:130px;
+
+margin:auto;
+
+display:block;
+
+border-radius:50%;
+
+box-shadow:
+
+0 0 25px #00d9ff;
+
+}
+
+.title{
+
+text-align:center;
+
+font-size:36px;
+
+font-weight:700;
+
+margin-top:18px;
+
+background:linear-gradient(90deg,#ffffff,#00d9ff);
+
+-webkit-background-clip:text;
+
+-webkit-text-fill-color:transparent;
+
+}
+
+.subtitle{
+
+text-align:center;
+
+margin-top:8px;
+
+font-size:14px;
+
+color:#8abfff;
+
+letter-spacing:2px;
+
+}
+
+.card{
+
+margin-top:25px;
+
+background:rgba(255,255,255,.05);
+
+padding:18px;
+
+border-radius:18px;
+
+}
+
+.card h2{
+
+margin-bottom:15px;
+
+color:#00d9ff;
+
+}
+
+input{
+
+width:100%;
+
+padding:15px;
+
+margin-top:12px;
+
+border:none;
+
+outline:none;
+
+border-radius:12px;
+
+background:#202738;
+
+color:white;
+
+font-size:16px;
+
+transition:.3s;
+
+}
+
+input:focus{
+
+box-shadow:0 0 15px #00d9ff;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:15px;
+
+margin-top:18px;
+
+border:none;
+
+border-radius:14px;
+
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+
+color:white;
+
+font-size:17px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.btn:hover{
+
+transform:scale(1.03);
+
+box-shadow:0 0 20px #00d9ff;
+
+}
+.userName{
+
+text-align:center;
+
+margin-top:15px;
+
+font-size:18px;
+
+color:#00e5ff;
+
+font-weight:bold;
+
+display:none;
+
+}
+
+.timeBox{
+
+margin-top:25px;
+
+background:rgba(255,255,255,.05);
+
+padding:20px;
+
+border-radius:20px;
+
+text-align:center;
+
+}
+
+.display{
+
+font-size:45px;
+
+font-weight:bold;
+
+margin:20px 0;
+
+letter-spacing:3px;
+
+color:white;
+
+text-shadow:0 0 20px #00d9ff;
+
+}
+
+.row{
+
+display:flex;
+
+gap:10px;
+
+margin-top:15px;
+
+}
+
+.row button{
+
+flex:1;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+font-size:16px;
+
+font-weight:bold;
+
+cursor:pointer;
+
+transition:.3s;
+
+}
+
+.start{
+
+background:#00c853;
+
+color:white;
+
+}
+
+.pause{
+
+background:#ff9800;
+
+color:white;
+
+}
+
+.reset{
+
+background:#ff1744;
+
+color:white;
+
+}
+
+.timerInput{
+
+margin-top:15px;
+
+}
+
+.footer{
+
+margin-top:25px;
+
+text-align:center;
+
+font-size:13px;
+
+color:#b9dfff;
+
+line-height:24px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="logo.png" class="logo">
+
+<div class="title">
+
+TimerCore
+
+</div>
+
+<div class="subtitle">
+
+TIME • FOCUS • ACHIEVE
+
+</div>
+
+<div class="card">
+
+<h2>Registration</h2>
+
+<input
+id="name"
+type="text"
+placeholder="Enter Name">
+
+<input
+id="email"
+type="email"
+placeholder="Enter Email">
+
+<button
+class="btn"
+id="register">
+
+Register
+
+</button>
+
+<div
+class="userName"
+id="userName">
+
+</div>
+
+</div>
+
+<div class="timeBox">
+
+<h2>
+
+Stopwatch
+
+</h2>
+
+<div
+class="display"
+id="display">
+
+00:00:00
+
+</div>
+
+<div class="row">
+
+<button
+class="start"
+id="start">
+
+START
+
+</button>
+
+<button
+class="pause"
+id="pause">
+
+PAUSE
+
+</button>
+
+<button
+class="reset"
+id="reset">
+
+RESET
+
+</button>
+
+</div>
+
+<input
+class="timerInput"
+id="seconds"
+
+type="number"
+
+placeholder="Enter Countdown Seconds">
+
+<button
+class="btn"
+id="timerBtn">
+
+Start Timer
+
+</button>
+
+</div>
+
+<div class="footer">
+
+<b>By THE SHIVAM TIWARI</b>
+
+<br>
+
+MANAGED BY THESHIVAMCORE
+
+<br>
+
+CONTACT US ON
+
+<br>
+
+theshivamcore@gmail.com
+
+</div>
+
+<script>
+
+let ms=0;
+
+let sec=0;
+
+let min=0;
+
+let timer=null;
+
+const display=document.getElementById("display");
+
+const start=document.getElementById("start");
+
+const pause=document.getElementById("pause");
+
+const reset=document.getElementById("reset");
+
+const register=document.getElementById("register");
+
+const userName=document.getElementById("userName");
+// =============================
+// Registration
+// =============================
+
+if(localStorage.getItem("tc_name")){
+
+userName.style.display="block";
+
+userName.innerHTML=
+"Welcome, "+localStorage.getItem("tc_name")+" 👋";
+
+}
+
+register.onclick=function(){
+
+let n=document.getElementById("name").value.trim();
+
+let e=document.getElementById("email").value.trim();
+
+if(n=="" || e==""){
+
+alert("Please fill all fields.");
+
+return;
+
+}
+
+localStorage.setItem("tc_name",n);
+
+localStorage.setItem("tc_email",e);
+
+userName.style.display="block";
+
+userName.innerHTML="Welcome, "+n+" 👋";
+
+alert("Registration Successful");
+
+}
+
+// =============================
+// Stopwatch
+// =============================
+
+function update(){
+
+let m=min<10?"0"+min:min;
+
+let s=sec<10?"0"+sec:sec;
+
+let milli=ms<10?"0"+ms:ms;
+
+display.innerHTML=m+":"+s+":"+milli;
+
+}
+
+function run(){
+
+ms++;
+
+if(ms>=100){
+
+ms=0;
+
+sec++;
+
+}
+
+if(sec>=60){
+
+sec=0;
+
+min++;
+
+}
+
+update();
+
+}
+
+start.onclick=function(){
+
+if(timer!=null)return;
+
+timer=setInterval(run,10);
+
+}
+
+pause.onclick=function(){
+
+clearInterval(timer);
+
+timer=null;
+
+}
+
+reset.onclick=function(){
+
+clearInterval(timer);
+
+timer=null;
+
+ms=0;
+
+sec=0;
+
+min=0;
+
+update();
+
+}
+
+// =============================
+// Countdown Timer
+// =============================
+
+document.getElementById("timerBtn").onclick=function(){
+
+let value=parseInt(document.getElementById("seconds").value);
+
+if(isNaN(value)||value<=0){
+
+alert("Enter valid seconds");
+
+return;
+
+}
+
+let count=value;
+
+display.innerHTML="00:"+count+":00";
+
+let down=setInterval(function(){
+
+count--;
+
+display.innerHTML="00:"+(count<10?"0"+count:count)+":00";
+
+if(count<=0){
+
+clearInterval(down);
+
+display.innerHTML="TIME UP ⏰";
+
+alert("Timer Finished");
+
+}
+
+},1000);
+
+}
+
+// First Display
+
+update();
+
+</script>
+
+</body>
+
+</html>
