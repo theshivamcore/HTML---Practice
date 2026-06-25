@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TimeCore</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#0f1115;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:white;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:400px;
+background:#1b1e24;
+padding:25px;
+border-radius:20px;
+box-shadow:0 0 20px rgba(0,255,255,.15);
+animation:fade .8s;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(25px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.logo{
+text-align:center;
+font-size:34px;
+margin-bottom:5px;
+}
+
+.title{
+text-align:center;
+font-size:28px;
+font-weight:bold;
+}
+
+.subtitle{
+text-align:center;
+color:#9aa0aa;
+margin-bottom:25px;
+}
+
+.card{
+background:#252932;
+padding:18px;
+border-radius:15px;
+margin-bottom:20px;
+}
+
+.card h2{
+font-size:18px;
+margin-bottom:15px;
+}
+
+input{
+width:100%;
+padding:14px;
+margin-bottom:12px;
+border:none;
+outline:none;
+background:#313744;
+color:white;
+border-radius:10px;
+font-size:16px;
+}
+
+button{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+font-size:16px;
+cursor:pointer;
+transition:.3s;
+font-weight:bold;
+}
+
+#registerBtn{
+background:#00d9ff;
+color:black;
+}
+
+#registerBtn:hover{
+transform:scale(1.02);
+}
+
+.userBox{
+display:none;
+text-align:center;
+font-size:18px;
+margin-bottom:18px;
+color:#00e5ff;
+}
+
+.stopwatch{
+text-align:center;
+font-size:42px;
+font-weight:bold;
+margin:25px 0;
+letter-spacing:2px;
+}
+
+.controls{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.start{
+background:#00c853;
+color:white;
+}
+
+.pause{
+background:#ff9800;
+color:white;
+}
+
+.reset{
+background:#ff1744;
+color:white;
+margin-top:12px;
+}
+
+.footer{
+text-align:center;
+margin-top:20px;
+font-size:13px;
+color:#888;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="logo">⏱</div>
+
+<div class="title">TimeCore</div>
+
+<div class="subtitle">
+Professional Stopwatch
+</div>
+
+<div class="userBox" id="userBox"></div>
+
+<div class="card">
+
+<h2>Registration</h2>
+
+<input
+type="text"
+id="name"
+placeholder="Enter Name">
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email">
+
+<button id="registerBtn">
+Register
+</button>
+
+</div>
+
+<div class="card">
+
+<div
+class="stopwatch"
+id="display">
+
+00:00:00
+
+</div>
+
+<div class="controls">
+
+<button
+class="start"
+id="start">
+
+START
+
+</button>
+
+<button
+class="pause"
+id="pause">
+
+PAUSE
+
+</button>
+
+</div>
+
+<button
+class="reset"
+id="reset">
+
+RESET
+
+</button>
+
+</div>
+
+<div class="footer">
+
+Made with ❤️ using HTML CSS JS
+
+</div>
+
+<script>
+
+let milliseconds=0;
+
+let seconds=0;
+
+let minutes=0;
+
+let timer=null;
+
+const display=document.getElementById("display");
+
+const start=document.getElementById("start");
+
+const pause=document.getElementById("pause");
+
+const reset=document.getElementById("reset");
+
+const registerBtn=document.getElementById("registerBtn");
+
+const userBox=document.getElementById("userBox");
+// Registration
+
+if(localStorage.getItem("timecore_name")){
+
+let savedName=localStorage.getItem("timecore_name");
+
+userBox.style.display="block";
+
+userBox.innerHTML="Welcome, "+savedName+" 👋";
+
+}
+
+registerBtn.onclick=function(){
+
+let name=document.getElementById("name").value.trim();
+
+let email=document.getElementById("email").value.trim();
+
+if(name=="" || email==""){
+
+alert("Please fill all fields");
+
+return;
+
+}
+
+localStorage.setItem("timecore_name",name);
+
+localStorage.setItem("timecore_email",email);
+
+userBox.style.display="block";
+
+userBox.innerHTML="Welcome, "+name+" 👋";
+
+alert("Registration Successful");
+
+}
+
+
+
+// Stopwatch
+
+function updateDisplay(){
+
+let m=minutes<10?"0"+minutes:minutes;
+
+let s=seconds<10?"0"+seconds:seconds;
+
+let ms=milliseconds<10?"0"+milliseconds:milliseconds;
+
+display.innerHTML=m+":"+s+":"+ms;
+
+}
+
+function runTimer(){
+
+milliseconds++;
+
+if(milliseconds>=100){
+
+milliseconds=0;
+
+seconds++;
+
+}
+
+if(seconds>=60){
+
+seconds=0;
+
+minutes++;
+
+}
+
+updateDisplay();
+
+}
+
+start.onclick=function(){
+
+if(timer!=null){
+
+return;
+
+}
+
+timer=setInterval(runTimer,10);
+
+};
+
+pause.onclick=function(){
+
+clearInterval(timer);
+
+timer=null;
+
+};
+
+reset.onclick=function(){
+
+clearInterval(timer);
+
+timer=null;
+
+milliseconds=0;
+
+seconds=0;
+
+minutes=0;
+
+updateDisplay();
+
+};
+
+updateDisplay();
+
+// Optional: Enter key se registration
+document.getElementById("email").addEventListener("keypress", function(e){
+    if(e.key==="Enter"){
+        registerBtn.click();
+    }
+});
+
+// Page load hone par display update
+updateDisplay();
+
+</script>
+
+</body>
+</html>
